@@ -320,7 +320,15 @@ class ClimateGroup(GroupEntity, ClimateEntity):
         # so that we don't break in the future when a new feature is added.
         self._attr_supported_features &= SUPPORT_FLAGS
 
+        self._enable_turn_on_off_backwards_compatibility = False
+
         _LOGGER.debug("State update complete")
+
+    async def async_turn_off(self) -> None:
+        await self.async_set_hvac_mode(HVACMode.OFF)
+
+    async def async_turn_on(self) -> None:
+        await self.async_set_hvac_mode(HVACMode.HEAT)
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Forward the turn_on command to all climate in the climate group."""
