@@ -269,7 +269,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
             self._attr_hvac_mode = max(set(current_hvac_modes), key=current_hvac_modes.count)
             if self._attr_hvac_mode != self._most_common_hvac_mode:
                 self._most_common_hvac_mode = self._attr_hvac_mode
-                _LOGGER.info(f"Updated most common hvac mode: '{self._most_common_hvac_mode}', {self._logger_data}")
+                _LOGGER.debug(f"Updated most common hvac mode: '{self._most_common_hvac_mode}', {self._logger_data}")
 
         # return HVACMode.OFF if all modes are set to off
         elif all(x.state == HVACMode.OFF for x in filtered_states):
@@ -332,14 +332,14 @@ class ClimateGroup(GroupEntity, ClimateEntity):
     async def async_turn_on(self) -> None:
         """Forward the turn_on command to all climate in the climate group."""
         if self._most_common_hvac_mode is not None:
-            _LOGGER.info(f"Turn on with most common hvac mode: '{self._most_common_hvac_mode}', {self._logger_data}")
+            _LOGGER.debug(f"Turn on with most common hvac mode: '{self._most_common_hvac_mode}', {self._logger_data}")
             await self.async_set_hvac_mode(self._most_common_hvac_mode)
         
         # Try to set the first available HVAC mode
         elif self._attr_hvac_modes:
             for mode in self._attr_hvac_modes:
                 if mode != HVACMode.OFF:
-                    _LOGGER.info(f"Turn on with first available hvac mode: '{mode}', {self._logger_data}")
+                    _LOGGER.debug(f"Turn on with first available hvac mode: '{mode}', {self._logger_data}")
                     await self.async_set_hvac_mode(mode)
                     break
 
@@ -349,7 +349,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
     async def async_turn_off(self) -> None:
         """Forward the turn_off command to all climate in the climate group."""
         if HVACMode.OFF in self._attr_hvac_modes:
-            _LOGGER.info(f"Turn off with hvac mode 'off', {self._logger_data}")
+            _LOGGER.debug(f"Turn off with hvac mode 'off', {self._logger_data}")
             await self.async_set_hvac_mode(HVACMode.OFF)
 
         else:
@@ -369,7 +369,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
         if ATTR_TARGET_TEMP_HIGH in kwargs:
             data[ATTR_TARGET_TEMP_HIGH] = kwargs[ATTR_TARGET_TEMP_HIGH]
 
-        _LOGGER.info("Setting temperature: %s", data)
+        _LOGGER.debug("Setting temperature: %s", data)
 
         await self.hass.services.async_call(
             DOMAIN, SERVICE_SET_TEMPERATURE, data, blocking=True, context=self._context
@@ -378,7 +378,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Forward the set_hvac_mode command to all climate in the climate group."""
         data = {ATTR_ENTITY_ID: self._entity_ids, ATTR_HVAC_MODE: hvac_mode}
-        _LOGGER.info("Setting hvac mode: %s", data)
+        _LOGGER.debug("Setting hvac mode: %s", data)
         await self.hass.services.async_call(
             DOMAIN, SERVICE_SET_HVAC_MODE, data, blocking=True, context=self._context
         )
@@ -386,7 +386,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
     async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Forward the set_fan_mode to all climate in the climate group."""
         data = {ATTR_ENTITY_ID: self._entity_ids, ATTR_FAN_MODE: fan_mode}
-        _LOGGER.info("Setting fan mode: %s", data)
+        _LOGGER.debug("Setting fan mode: %s", data)
         await self.hass.services.async_call(
             DOMAIN, SERVICE_SET_FAN_MODE, data, blocking=True, context=self._context
         )
@@ -394,7 +394,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
     async def async_set_swing_mode(self, swing_mode: str) -> None:
         """Forward the set_swing_mode to all climate in the climate group."""
         data = {ATTR_ENTITY_ID: self._entity_ids, ATTR_SWING_MODE: swing_mode}
-        _LOGGER.info("Setting swing mode: %s", data)
+        _LOGGER.debug("Setting swing mode: %s", data)
         await self.hass.services.async_call(
             DOMAIN,
             SERVICE_SET_SWING_MODE,
@@ -406,7 +406,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
     async def async_set_preset_mode(self, preset_mode: str) -> None:
         """Forward the set_preset_mode to all climate in the climate group."""
         data = {ATTR_ENTITY_ID: self._entity_ids, ATTR_PRESET_MODE: preset_mode}
-        _LOGGER.info("Setting preset mode: %s", data)
+        _LOGGER.debug("Setting preset mode: %s", data)
         await self.hass.services.async_call(
             DOMAIN,
             SERVICE_SET_PRESET_MODE,
