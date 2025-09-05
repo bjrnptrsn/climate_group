@@ -16,6 +16,11 @@ Inspired/copied from Home Assistant component ["Light group"](https://github.com
 
 ## Changelog
 
+### 1.0.8
+- This release contains no functional changes
+- This integration is no longer being actively developed
+- Please switch to [Climate Group Helper](https://github.com/bjrnptrsn/climate_group_helper), the new version of this integration with extended features
+
 ### 1.0.7
 - Changed behaviour for Action 'turn on': Use the most common HVAC mode
 
