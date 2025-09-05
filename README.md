@@ -1,6 +1,13 @@
+<br>
+
+## A new integration ``Climate Group Helper`` with additional features is available [here](https://github.com/bjrnptrsn/climate_group_helper)
+
+<br>
+
 # Home Assistant Climate Group
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+
 
 ### Groups multiple climate devices to a single entity
 
