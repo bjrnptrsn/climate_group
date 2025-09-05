@@ -61,6 +61,7 @@ _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "Climate Group"
 DECIMAL_ACCURACY_TO_HALF = "decimal_accuracy_to_half"
+DECIMAL_ACCURACY_TO_INTEGERS = "decimal_accuracy_to_integers"
 
 # No limit on parallel updates to enable a group calling another group
 PARALLEL_UPDATES = 0
@@ -71,6 +72,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_UNIQUE_ID): cv.string,
         vol.Optional(CONF_TEMPERATURE_UNIT): cv.temperature_unit,
         vol.Optional(DECIMAL_ACCURACY_TO_HALF, default=False): cv.boolean,
+        vol.Optional(DECIMAL_ACCURACY_TO_INTEGERS, default=False): cv.boolean,
         vol.Required(CONF_ENTITIES): cv.entities_domain(DOMAIN),
     }
 )
@@ -114,6 +116,7 @@ async def async_setup_platform(
                 config[CONF_ENTITIES],
                 config.get(CONF_TEMPERATURE_UNIT, hass.config.units.temperature_unit),
                 config.get(DECIMAL_ACCURACY_TO_HALF),
+                config.get(DECIMAL_ACCURACY_TO_INTEGERS),
             )
         ]
     )
@@ -158,6 +161,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
         entity_ids: list[str],
         temperature_unit: str,
         decimal_accuracy_to_half: bool,
+        decimal_accuracy_to_integers: bool,
         ) -> None:
         
         """Initialize a climate group."""
@@ -170,6 +174,7 @@ class ClimateGroup(GroupEntity, ClimateEntity):
         self._attr_temperature_unit = temperature_unit
 
         self._decimal_accuracy_to_half = decimal_accuracy_to_half
+        self._decimal_accuracy_to_integers = decimal_accuracy_to_integers
         
         self._logger_data = {ATTR_ENTITY_ID: entity_ids}
 
@@ -230,11 +235,12 @@ class ClimateGroup(GroupEntity, ClimateEntity):
         self._attr_target_temperature = reduce_attribute(
             states, ATTR_TEMPERATURE, reduce=lambda *data: mean(data)
         )        
-        if self._decimal_accuracy_to_half and self._attr_target_temperature is not None:
-            """Round decimal accuracy of target temperature to .5"""
+        if ((self._decimal_accuracy_to_half or self._decimal_accuracy_to_integers)
+                and self._attr_target_temperature is not None):
+            """Round decimal accuracy of target temperature to .5 or to integers"""
             self._attr_target_temperature = round_decimal_accuracy(
                 value = self._attr_target_temperature,
-                fraction = 2,
+                fraction = 1 if self._decimal_accuracy_to_integers else 2,
                 precision = 1
             )
             
