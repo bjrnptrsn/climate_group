@@ -1,13 +1,17 @@
-<br>
+# [ARCHIVED] Home Assistant Climate Group
 
-## A new integration ``Climate Group Helper`` with additional features is available [here](https://github.com/bjrnptrsn/climate_group_helper)
+# 🚀 [Switch to Climate Group Helper](https://github.com/bjrnptrsn/climate_group_helper)
 
-<br>
+> [!IMPORTANT]
+> **This integration has been superseded by the new and improved [Climate Group Helper](https://github.com/bjrnptrsn/climate_group_helper).**
+> It offers a modern UI configuration, significantly more features (Windows, Schedules, Calibration, etc.), and better stability. 
+> 
+> **Development of this original integration has ceased.**
 
-# Home Assistant Climate Group
+---
+
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-
 
 ### Groups multiple climate devices to a single entity
 
@@ -19,7 +23,7 @@ Inspired/copied from Home Assistant component ["Light group"](https://github.com
 ### 1.0.8
 - This release contains no functional changes
 - This integration is no longer being actively developed
-- Please switch to [Climate Group Helper](https://github.com/bjrnptrsn/climate_group_helper), the new version of this integration with extended features
+- Please switch to [Climate Group Helper](https://github.com/bjrnptrsn/climate_group_helper)
 
 ### 1.0.7
 - Changed behaviour for Action 'turn on': Use the most common HVAC mode
@@ -40,12 +44,11 @@ Inspired/copied from Home Assistant component ["Light group"](https://github.com
 - Minor changes to the behaviour of the states: HVACAction, HVACMode, HVACPresetMode
 
 ### 1.0.1
-- Forked from [@daenny]((https://github.com/bjrnptrsn/climate_group)) based on 1.0.0-rc6
+- Forked from [@daenny](https://github.com/daenny/climate_group) based on 1.0.0-rc6
 - Patched for Home Assistant core 2024.1.0
 
 
-
-## How to install:
+## How to install (Legacy):
 
 ### HACS
 Add this repo **https://github.com/bjrnptrsn/climate_group** to the HACS store and install from there.
@@ -53,7 +56,7 @@ Add this repo **https://github.com/bjrnptrsn/climate_group** to the HACS store a
 ### Local installation
 Copy both .py files to folder: ***config/custom_components/climate_group***
 
-## Sample Configuration
+## Sample Configuration (Legacy)
 
 Put this inside ***configuration.yaml*** in config folder of hass.io
 
